@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import {
   UserOutlined, ShoppingCartOutlined, DollarOutlined,
-  TrendingUpOutlined, ArrowUpOutlined, ArrowDownOutlined,
+  ArrowUpOutlined, ArrowDownOutlined,
   EllipsisOutlined, BellOutlined, SettingOutlined,
   MenuFoldOutlined, MenuUnfoldOutlined, SearchOutlined,
   PlusOutlined, FilterOutlined, ExportOutlined,
@@ -58,7 +58,7 @@ export const AntDesignDesktopDashboard: React.FC = () => {
       value: 3.24,
       precision: 2,
       valueStyle: { color: '#52c41a' },
-      prefix: <TrendingUpOutlined />,
+      prefix: <ArrowUpOutlined />,
       suffix: '%',
       trend: 'up'
     }

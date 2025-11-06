@@ -223,13 +223,12 @@ export const AntDesignMobileDashboard: React.FC = () => {
       {/* Recent Activity */}
       <Card title="Recent Activity" size="small">
         <Timeline
-          size="small"
           items={activities.map((activity, index) => ({
             key: index,
             color: activity.color,
             children: (
               <div>
-                <Text strong style={{ fontSize: 14 }}>{activity.title}</Text>
+                <Text strong>{activity.title}</Text>
                 <br />
                 <Text type="secondary" style={{ fontSize: 12 }}>
                   {activity.description}

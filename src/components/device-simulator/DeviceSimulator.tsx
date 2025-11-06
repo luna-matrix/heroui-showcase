@@ -41,99 +41,52 @@ export const DeviceSimulator: React.FC<DeviceSimulatorProps> = ({
   };
 
   const openInNewWindow = () => {
+    // Detect current library and app from URL
+    const currentUrl = window.location.pathname;
+    let library = 'shadcn';
+    let app = 'dashboard';
+    
+    if (currentUrl.includes('/apps/dashboard')) {
+      app = 'dashboard';
+    } else if (currentUrl.includes('/apps/ecommerce')) {
+      app = 'ecommerce';
+    } else if (currentUrl.includes('/apps/admin')) {
+      app = 'admin';
+    }
+    
+    // Get library from URL params or path
+    const urlParams = new URLSearchParams(window.location.search);
+    library = urlParams.get('library') || library;
+    
+    if (currentUrl.includes('heroui')) {
+      library = 'heroui';
+    } else if (currentUrl.includes('ant-design')) {
+      library = 'ant-design';
+    }
+    
+    // Create unique window name based on library, app, device, and orientation
+    const windowName = `standalone-${library}-${app}-${selectedDevice.id}-${orientation}`;
+    
     const isPortrait = orientation === 'portrait';
     const width = isPortrait ? selectedDevice.width : selectedDevice.height;
     const height = isPortrait ? selectedDevice.height : selectedDevice.width;
     
-    // Create a new window with the current device dimensions
-    const windowFeatures = `width=${width + 100},height=${height + 100},scrollbars=yes,resizable=yes`;
-    const newWindow = window.open('', '_blank', windowFeatures);
+    // Close any existing window with same name
+    const existingWindow = window.open('', windowName);
+    if (existingWindow && !existingWindow.closed) {
+      existingWindow.close();
+    }
     
+    // Use standalone page instead of simulator page for clean view
+    const standaloneUrl = `${window.location.origin}/standalone?device=${selectedDevice.id}&library=${library}&app=${app}&orientation=${orientation}`;
+    
+    // Create a new window with current device dimensions
+    const windowFeatures = `width=${width + 50},height=${height + 50},scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no`;
+    const newWindow = window.open(standaloneUrl, windowName, windowFeatures);
+    
+    // Focus new window
     if (newWindow) {
-      // Write the HTML content to the new window
-      newWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${selectedDevice.name} Simulator - Component Library Showcase</title>
-          <style>
-            body {
-              margin: 0;
-              padding: 20px;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              background: #f3f4f6;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              min-height: 100vh;
-            }
-            .simulator-container {
-              background: white;
-              border-radius: ${selectedDevice.type === 'mobile' ? '2rem' : '0.5rem'};
-              box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-              overflow: hidden;
-              width: ${width}px;
-              height: ${height}px;
-              border: ${selectedDevice.type === 'mobile' ? '8px solid black' : '1px solid #e5e7eb'};
-            }
-            .header {
-              background: white;
-              padding: 10px;
-              border-bottom: 1px solid #e5e7eb;
-              text-align: center;
-              font-size: 14px;
-              color: #6b7280;
-            }
-            .device-info {
-              position: absolute;
-              top: 10px;
-              right: 10px;
-              background: rgba(255, 255, 255, 0.9);
-              padding: 8px;
-              border-radius: 6px;
-              font-size: 12px;
-              color: #374151;
-              backdrop-filter: blur(4px);
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <strong>${selectedDevice.name}</strong> Simulator 
-            <span style="margin-left: 10px; color: #9ca3af;">(${width} × ${height}px)</span>
-          </div>
-          <div class="simulator-container" id="simulator-content">
-            <div style="padding: 20px; text-align: center; color: #9ca3af;">
-              Loading simulator content...
-            </div>
-          </div>
-          <div class="device-info">
-            <div><strong>Device:</strong> ${selectedDevice.name}</div>
-            <div><strong>Type:</strong> ${selectedDevice.type}</div>
-            <div><strong>Orientation:</strong> ${orientation}</div>
-            <div><strong>Library:</strong> ${typeof window !== 'undefined' && window.location.pathname.includes('heroui') ? 'HeroUI' : 'shadcn/ui'}</div>
-          </div>
-          <script>
-            // Try to get the actual content from the main window
-            if (window.opener && !window.opener.closed) {
-              setTimeout(() => {
-                try {
-                  const simulatorContent = window.opener.document.querySelector('#simulator-content')?.innerHTML;
-                  if (simulatorContent) {
-                    document.getElementById('simulator-content').innerHTML = simulatorContent;
-                  }
-                } catch (e) {
-                  console.log('Could not sync content:', e);
-                }
-              }, 1000);
-            }
-          </script>
-        </body>
-        </html>
-      `);
-      newWindow.document.close();
+      newWindow.focus();
     }
   };
 
@@ -154,7 +107,7 @@ export const DeviceSimulator: React.FC<DeviceSimulatorProps> = ({
           >
             <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-black rounded-full"></div>
             <div 
-              className="bg-white rounded-[2rem] overflow-hidden"
+              className="bg-white rounded-[2rem] overflow-auto"
               style={{
                 width: `${width}px`,
                 height: `${height}px`
@@ -178,7 +131,7 @@ export const DeviceSimulator: React.FC<DeviceSimulatorProps> = ({
             }}
           >
             <div 
-              className="bg-white rounded-md overflow-hidden"
+              className="bg-white rounded-md overflow-auto"
               style={{
                 width: `${width}px`,
                 height: `${height}px`

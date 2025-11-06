@@ -105,10 +105,10 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="flex flex-wrap justify-center gap-4"
           >
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
-              Explore Libraries
+            <a href="/components" className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2">
+              Compare Components
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
             <button className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
               View Documentation
             </button>

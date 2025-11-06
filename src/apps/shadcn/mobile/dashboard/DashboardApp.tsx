@@ -206,7 +206,7 @@ export const ShadcnUIMobileDashboard: React.FC = () => {
             />
             <MobileMetricCard
               title="Users"
-              value={(data.metrics.users / 1000).toFixed(1)}K
+              value={`${(data.metrics.users / 1000).toFixed(1)}K`}
               change={8.2}
               icon={Users}
               color="bg-green-500"
