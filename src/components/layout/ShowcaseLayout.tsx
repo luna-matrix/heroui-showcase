@@ -52,6 +52,12 @@ export const ShowcaseLayout: React.FC<ShowcaseLayoutProps> = ({
       href: '/apps/admin',
       icon: Settings,
       description: 'Admin interface showcase'
+    },
+    {
+      name: 'Performance',
+      href: '/performance',
+      icon: BarChart3,
+      description: 'Performance monitoring & analysis'
     }
   ];
 

@@ -7,6 +7,8 @@ import { DeviceSimulator } from '@/components/device-simulator/DeviceSimulator';
 import { ShadcnUIDesktopDashboard } from '@/apps/shadcn/desktop/dashboard/DashboardApp';
 import { ShadcnUIMobileDashboard } from '@/apps/shadcn/mobile/dashboard/DashboardApp';
 import { HeroUIDesktopDashboard } from '@/apps/heroui/desktop/dashboard/DashboardApp';
+import { AntDesignDesktopDashboard } from '@/apps/ant-design/desktop/dashboard/DashboardApp';
+import { AntDesignMobileDashboard } from '@/apps/ant-design/mobile/dashboard/DashboardApp';
 import { getDefaultDevice, devices } from '@/lib/device-utils/devices';
 import { Device } from '@/lib/types';
 import { cn } from '@/lib/utils/cn';
@@ -44,7 +46,9 @@ export default function DashboardPage() {
         </div>
       ) : <HeroUIDesktopDashboard />;
     }
-    // TODO: Add Ant Design implementation
+    if (selectedLibrary === 'ant-design') {
+      return isMobile ? <AntDesignMobileDashboard /> : <AntDesignDesktopDashboard />;
+    }
     return (
       <div className="flex items-center justify-center h-full bg-gray-50">
         <div className="text-center p-8">
